@@ -57,11 +57,15 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/auth/**").permitAll();
+                //auth.requestMatchers("/h2-console/**").permitAll();
                 auth.requestMatchers("/admin/**").hasRole("ADMIN");
                 auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
                 auth.anyRequest().authenticated();
             });
-            
+        /*
+        http.csrf().ignoringRequestMatchers("/h2-console/**");
+        http.headers().frameOptions().disable();
+            */
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthenticationConverter());
